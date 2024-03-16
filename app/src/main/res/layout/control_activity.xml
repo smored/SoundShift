@@ -50,7 +50,7 @@
 
 <!--        FORWARD BUTTON-->
         <Button
-            android:id="@+id/forwardSong"
+            android:id="@+id/forwardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reverse"
-            android:id="@+id/reverseSong"
+            android:id="@+id/reverseButton"
             android:layout_toLeftOf="@id/playButton"
             android:layout_centerVertical="true"
             />
