@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<!--    Our App Logo goes here-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_launcher_background"
+        android:id="@+id/ssLogo"
+        android:padding="20dp"/>
+
+<!--    The album art goes here, default pic for now-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_launcher_background"
+        android:id="@+id/albumArt"
+        android:padding="20dp"/>
+
+<!--    Lyrics will be displayed here-->
+    <TextView
+        android:id="@+id/lyrics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="weewooweewoo"
+        android:layout_below="@id/albumArt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+<!--    Bottom control bar -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_launcher_background"
+        android:id="@+id/bottomBar"
+        android:padding="20dp"/>
+
+<!--    Controls -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@id/bottomBar"
+        android:layout_alignParentBottom="true">
+
+<!--        FORWARD BUTTON-->
+        <Button
+            android:id="@+id/forwardSong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/playButton"
+            android:text="Forward"/>
+
+<!--        PLAY BUTTON-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reverse"
+            android:id="@+id/playButton"
+            android:layout_centerInParent="true"
+            android:layout_margin="20dp"
+            />
+
+<!--        REVERSE BUTTON-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reverse"
+            android:id="@+id/reverseSong"
+            android:layout_toLeftOf="@id/playButton"
+            android:layout_centerVertical="true"
+            />
+
+        </RelativeLayout>
+
+</RelativeLayout>
