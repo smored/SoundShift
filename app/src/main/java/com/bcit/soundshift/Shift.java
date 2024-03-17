@@ -2,19 +2,29 @@ package com.bcit.soundshift;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
-public class Shift {
+public class Shift implements Serializable {
     private final String name;
     private final int ID;
     private int currentPlaylist_id = -1;
-    private DatabaseHelper sql;
+    private int currentSong_id = -1;
+    private transient DatabaseHelper sql;
 
     Shift(Context context, String name, int ID)
     {
         this.name = name;
         this.ID = ID;
+        sql = new DatabaseHelper(context);
+        AvailableSongs = new ArrayList<>();
+    }
+
+    public void transientDatabase(Context context)
+    {
         sql = new DatabaseHelper(context);
     }
 
@@ -31,8 +41,8 @@ public class Shift {
         public String title;
         public int playlist_id;
         public int song_id;
-        public int weight;
-        public song(String t, int p, int s, int w)
+        public float weight;
+        public song(String t, int p, int s, float w)
         {
             title = t;
             playlist_id = p;
@@ -63,17 +73,21 @@ public class Shift {
         ArrayList<String> params = new ArrayList<>();
         params.add(Integer.toString(ID));
         params.add(Integer.toString(currentPlaylist_id));
+        params.add(Integer.toString(currentSong_id));
 
         ArrayList<ArrayList<String>> result = sql.cursorToList(sql.executeQuery(sql.replaceNamedParams(sql.SongListQuery, params)));
 
-        AvailableSongs.clear();
+        if(AvailableSongs.size() != 0)
+        {
+            AvailableSongs.clear();
+        }
         for(int i  = 0; i < result.size(); i++)
         {
-            AvailableSongs.add(new song(result.get(i).get(0), Integer.parseInt(result.get(i).get(1)), Integer.parseInt(result.get(i).get(2)), Integer.parseInt(result.get(i).get(3))));
+            AvailableSongs.add(new song(result.get(i).get(0), Integer.parseInt(result.get(i).get(1)), Integer.parseInt(result.get(i).get(2)), Float.parseFloat(result.get(i).get(3))));
         }
         return true;
     }
-    public int getNextSong()
+    public ArrayList<Integer> getNextSong()
     {
         if (currentPlaylist_id == -1)
         {
@@ -83,12 +97,12 @@ public class Shift {
             ArrayList<ArrayList<String>> result = sql.cursorToList(sql.executeQuery(sql.replaceNamedParams(sql.AllPlaylistsQuery, params)));
 
             ArrayList<Integer> playlists = new ArrayList<>();
-            ArrayList<Integer> weight = new ArrayList<>();
+            ArrayList<Float> weight = new ArrayList<>();
 
             for(int i = 0; i < result.size(); i++)
             {
                 playlists.add(Integer.parseInt(result.get(i).get(0)));
-                weight.add(0);
+                weight.add(1f);
             }
             ArrayList<Integer> starting_playlist = weightedShuffle(playlists, weight, 1);
 
@@ -98,7 +112,7 @@ public class Shift {
         updateSongList();
 
         ArrayList<Integer> songs = new ArrayList<>();
-        ArrayList<Integer> weight = new ArrayList<>();
+        ArrayList<Float> weight = new ArrayList<>();
 
         for(int i = 0; i < AvailableSongs.size(); i++)
         {
@@ -112,10 +126,20 @@ public class Shift {
             if (next_song.get(0) == AvailableSongs.get(i).song_id)
             {
                 currentPlaylist_id = AvailableSongs.get(i).playlist_id;
+                currentSong_id = AvailableSongs.get(i).song_id;
+                return new ArrayList<>(Arrays.asList(AvailableSongs.get(i).playlist_id, AvailableSongs.get(i).song_id));
             }
         }
+        return new ArrayList<>(Arrays.asList(-1, -1));
+    }
 
-        return next_song.get(0);
+    public ArrayList<String> getSongAndPlaylistNames(ArrayList<Integer> id)
+    {
+        ArrayList<String> stringList = new ArrayList<>();
+        for (Integer num : id) {
+            stringList.add(Integer.toString(num));
+        }
+        return sql.cursorToList(sql.executeQuery("SELECT playlist.playlist, song.title FROM song, playlist WHERE playlist.id = ? AND song.id = ?", stringList)).get(0);
     }
 
     private void setCurrentPlaylist_id(int id)
@@ -123,12 +147,12 @@ public class Shift {
         currentPlaylist_id = id;
     }
 
-    private static ArrayList<Integer> weightedShuffle(ArrayList<Integer> songs, ArrayList<Integer> weights, int numItems) {
+    private static ArrayList<Integer> weightedShuffle(ArrayList<Integer> songs, ArrayList<Float> weights, int numItems) {
         ArrayList<Integer> selectedItems = new ArrayList<>();
-        int totalWeight = 0;
+        float totalWeight = 0;
 
         // Calculate the total weight of all songs
-        for (int weight : weights) {
+        for (Float weight : weights) {
             totalWeight += weight;
         }
 

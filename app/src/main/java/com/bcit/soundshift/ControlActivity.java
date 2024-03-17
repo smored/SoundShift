@@ -10,12 +10,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class ControlActivity extends AppCompatActivity {
     private TextView lyrics;
     private ImageView coverArt;
     private Button reverseButton;
     private Button playButton;
     private Button forwardButton;
+    private Shift currentShift;
+    private ArrayList<Integer> whatsPlaying;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,8 @@ public class ControlActivity extends AppCompatActivity {
         setContentView(R.layout.control_activity);
         findView();
         setupButtonOnClickListener();
+        currentShift = (Shift) getIntent().getSerializableExtra("shift");
+        currentShift.transientDatabase(this);
     }
 
     private void findView() {
@@ -47,6 +53,7 @@ public class ControlActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 // start button redirects us to the control activity
                 lyrics.setText("WOAH!!! did you just PLAY??!?!?");
             }
@@ -56,8 +63,12 @@ public class ControlActivity extends AppCompatActivity {
         forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // start button redirects us to the control activity
-                lyrics.setText("WOAH!!! did you just SKIP THE SONG??!?!?");
+
+                currentShift.openDatabase();
+                whatsPlaying = currentShift.getNextSong();
+                ArrayList<String> whatsPlaying_str = currentShift.getSongAndPlaylistNames(whatsPlaying);
+                lyrics.setText("Current Playlist: " + whatsPlaying_str.get(0) + " Current Song: " + whatsPlaying_str.get(1));
+                currentShift.closeDatabase();
             }
         });
     }

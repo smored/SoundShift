@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -73,8 +74,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ArrayAdapter<Shift> shiftAdapter = new ArrayAdapter<Shift>(this, android.R.layout.simple_list_item_1, shifts);
-
         shiftList.setAdapter(shiftAdapter);
+
+        // Set click listener for the ListView
+        shiftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Retrieve the Shift object corresponding to the clicked position
+                Shift clickedShift = shifts.get(position);
+
+                // Start the next activity and pass the Shift object as an extra
+                Intent intent = new Intent(MainActivity.this, ControlActivity.class);
+                intent.putExtra("shift", clickedShift);
+                startActivity(intent);
+            }
+        });
     }
 
 

@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -97,7 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    public Cursor getData(String query, ArrayList<String> values)
+    public Cursor executeQuery(String query, ArrayList<String> values)
     {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] selectionArgs = values.toArray(new String[0]);
@@ -129,15 +130,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     static final String SongListQuery =
-            "SELECT song.title, song.id, playlist.playlist, playlist.weight " +
+            "SELECT song.title, playlist.id, song.id, playlist.weight " +
                     "FROM playlist " +
                     "INNER JOIN playlist_songs " +
                     "    ON playlist.id = playlist_songs.playlist_id " +
                     "INNER JOIN song " +
                     "    ON song.id = playlist_songs.song_id " +
-                    "WHERE playlist.id = :param2 " +
+                    "WHERE playlist.id = :param2 AND song.id != :param3 " +
                     "UNION " +
-                    "SELECT song.title, song.id, playlist.playlist, shift_connection.weight " +
+                    "SELECT song.title, playlist.id, song.id, shift_connection.weight " +
                     "FROM shift_connection " +
                     "INNER JOIN playlist " +
                     "    ON shift_connection.playlist_2_id = playlist.id " +
@@ -145,9 +146,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "    ON playlist.id = playlist_songs.playlist_id " +
                     "INNER JOIN song " +
                     "    ON song.id = playlist_songs.song_id " +
-                    "WHERE shift_connection.playlist_1_id = :param2 AND shift_connection.shift_id = :param1 " +
+                    "WHERE shift_connection.playlist_1_id = :param2 AND shift_connection.shift_id = :param1 AND song.id != :param3 " +
                     "UNION " +
-                    "SELECT song.title, song.id, playlist.playlist, shift_connection.weight " +
+                    "SELECT song.title, playlist.id, song.id, shift_connection.weight " +
                     "FROM shift_connection " +
                     "INNER JOIN playlist " +
                     "    ON shift_connection.playlist_1_id = playlist.id " +
@@ -155,7 +156,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "    ON playlist.id = playlist_songs.playlist_id " +
                     "INNER JOIN song " +
                     "    ON song.id = playlist_songs.song_id " +
-                    "WHERE shift_connection.playlist_2_id = :param2 AND shift_connection.shift_id = :param1";
+                    "WHERE shift_connection.playlist_2_id = :param2 AND shift_connection.shift_id = :param1 AND song.id != :param3";
     static final String AllPlaylistsQuery =
             "SELECT shift_connection.playlist_1_id " +
                     "FROM shift_connection " +
