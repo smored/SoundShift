@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -68,6 +69,9 @@ public class ControlActivity extends AppCompatActivity {
                 whatsPlaying = currentShift.getNextSong();
                 ArrayList<String> whatsPlaying_str = currentShift.getSongAndPlaylistNames(whatsPlaying);
                 lyrics.setText("Current Playlist: " + whatsPlaying_str.get(0) + " Current Song: " + whatsPlaying_str.get(1));
+                Bitmap bitmap;
+                bitmap = currentShift.getAlbumImage(whatsPlaying.get(1));
+                coverArt.setImageBitmap(bitmap);
                 currentShift.closeDatabase();
             }
         });

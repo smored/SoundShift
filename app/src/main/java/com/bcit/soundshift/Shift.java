@@ -1,5 +1,8 @@
 package com.bcit.soundshift;
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 
@@ -172,5 +175,23 @@ public class Shift implements Serializable {
         }
 
         return selectedItems;
+    }
+
+    public Bitmap getAlbumImage(int song_id)
+    {
+        ArrayList<String> song_string = new ArrayList<>();
+        song_string.add(Integer.toString(song_id));
+        Cursor cursor = sql.executeQuery("SELECT album.cover_art " +
+                "FROM album " +
+                "INNER JOIN song " +
+                "on album.id = song.album_id " +
+                "WHERE song.id = ?", song_string);
+
+        byte[] blobData;
+        if (cursor != null && cursor.moveToFirst()) {
+           blobData  = cursor.getBlob(0);
+           return BitmapFactory.decodeByteArray(blobData, 0, blobData.length);
+        }
+        return null;
     }
 }

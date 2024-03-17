@@ -95,6 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor executeQuery(String query) {
         SQLiteDatabase db = getReadableDatabase();
+        Log.i(TAG, query);
         return db.rawQuery(query, null);
     }
 
@@ -102,6 +103,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] selectionArgs = values.toArray(new String[0]);
+        String log = query;
+        for(int i = 0; i < values.size(); i ++)
+        {
+            log = log + " " + values.get(i);
+        }
+        Log.i(TAG, log);
         return db.rawQuery(query, selectionArgs);
     }
 
