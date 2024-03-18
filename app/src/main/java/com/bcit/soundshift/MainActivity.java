@@ -70,13 +70,14 @@ public class MainActivity extends AppCompatActivity {
         } else {
             OldCheckPermission();
             Log.e("OUT OF DATE", "Skill issue get a better phone");
+            int i = 1/0;
         }
 
-        try {
-            playMusic("/sample_music.mp3");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            playMusic("/sample_music.mp3");
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
     }
 

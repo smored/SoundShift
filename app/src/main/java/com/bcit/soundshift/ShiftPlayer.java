@@ -21,9 +21,11 @@ public class ShiftPlayer extends MediaPlayer {
     private boolean isPlaying;
     private int songLength;
     private int songProgress;
+    final String ENV_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath();
 
     public ShiftPlayer(@NonNull Context context) {
         this.isPlaying = false;
+
     }
 
 
@@ -34,10 +36,10 @@ public class ShiftPlayer extends MediaPlayer {
      */
     public void shift_startMusic(Context context, String filePath) throws IOException {
         if (this.isPlaying()) {
-            Log.w("ShiftPlayer", "Trying to play but already initialized");
-            return;
+            Log.w("ShiftPlayer", "Trying to play but already playing");
+            this.stop();
         }
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath() + filePath;
+        String path = ENV_PATH + filePath;
         Log.i("ShiftPlayer", "Attempting to play file with path: " + path);
         setDataSource(context, Uri.parse(path));
         prepare();
