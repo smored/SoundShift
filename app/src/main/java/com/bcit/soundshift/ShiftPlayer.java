@@ -37,9 +37,9 @@ public class ShiftPlayer extends MediaPlayer {
             Log.w("ShiftPlayer", "Trying to play but already initialized");
             return;
         }
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath();
-        setDataSource(context, Uri.parse(filePath));
-        Log.i("ShiftPlayer", "Attempting to play file with path: " + filePath);
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath() + filePath;
+        Log.i("ShiftPlayer", "Attempting to play file with path: " + path);
+        setDataSource(context, Uri.parse(path));
         prepare();
         start();
         isPlaying = true;

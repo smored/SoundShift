@@ -72,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
             Log.e("OUT OF DATE", "Skill issue get a better phone");
         }
 
+        try {
+            playMusic("/sample_music.mp3");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
