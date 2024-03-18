@@ -1,10 +1,15 @@
 package com.bcit.soundshift;
+import android.Manifest;
 
 import static com.google.android.material.internal.ContextUtils.getActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import androidx.annotation.NonNull;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -23,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+
 
 import android.content.res.AssetManager;
 
@@ -161,5 +167,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+//    public void getPerms() {
+//        requestPermissionL
+//        final int PERMISSION_REQUEST_CODE = 1001;
+//        ActivityCompat.requestPermissions(this,
+//                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+//                PERMISSION_REQUEST_CODE);
+//    }
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // Permission is granted. You can proceed with your task here.
+                    //temp for testing player
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                        ShiftPlayer player = new ShiftPlayer(this);
+                        try {
+                            player.shift_startMusic(this,"/sample_music.mp3");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
+                    // Permission is denied. You can handle this as per your requirement.
+                    System.out.println("FUCK");
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1001);
+                }
+            });
 
 }
