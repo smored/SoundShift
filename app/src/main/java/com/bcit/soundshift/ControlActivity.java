@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ControlActivity extends AppCompatActivity {
@@ -21,6 +24,7 @@ public class ControlActivity extends AppCompatActivity {
     private Button forwardButton;
     private Shift currentShift;
     private ArrayList<Integer> whatsPlaying;
+    private ShiftPlayer shiftPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,7 @@ public class ControlActivity extends AppCompatActivity {
         setupButtonOnClickListener();
         currentShift = (Shift) getIntent().getSerializableExtra("shift");
         currentShift.transientDatabase(this);
+        shiftPlayer = new ShiftPlayer(this);
     }
 
     private void findView() {
@@ -69,12 +74,29 @@ public class ControlActivity extends AppCompatActivity {
                 whatsPlaying = currentShift.getNextSong();
                 ArrayList<String> whatsPlaying_str = currentShift.getSongAndPlaylistNames(whatsPlaying);
                 lyrics.setText("Current Playlist: " + whatsPlaying_str.get(0) + " Current Song: " + whatsPlaying_str.get(1));
+
                 Bitmap bitmap;
                 bitmap = currentShift.getAlbumImage(whatsPlaying.get(1));
                 coverArt.setImageBitmap(bitmap);
+
+                String path = currentShift.getFilePath(whatsPlaying.get(1));
+
+                try {
+                    playMusic(path);
+                } catch (IOException e) {
+                    Log.e("ERROR", "File not found... ");
+                }
+
                 currentShift.closeDatabase();
+
+
             }
         });
+    }
+
+    private void playMusic(String filePath) throws IOException {
+        shiftPlayer.shift_startMusic(this, filePath);
+        Toast.makeText(this, "Attempting play " + filePath + "... Code: " + shiftPlayer.shift_getIsPlaying(), Toast.LENGTH_SHORT).show();
     }
 
 

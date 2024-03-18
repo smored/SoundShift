@@ -194,4 +194,14 @@ public class Shift implements Serializable {
         }
         return null;
     }
+
+    public String getFilePath(int song_id)
+    {
+        ArrayList<String> song_string = new ArrayList<>();
+        song_string.add(Integer.toString(song_id));
+        ArrayList<ArrayList<String>> out = sql.cursorToList(sql.executeQuery("SELECT song.filename " +
+                "FROM song " +
+                "WHERE song.id = ?", song_string));
+        return out.get(0).get(0);
+    }
 }
