@@ -5,13 +5,15 @@
     android:layout_height="match_parent">
 
 <!--    Our App Logo goes here-->
-    <ImageView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:src="@drawable/ic_launcher_background"
         android:id="@+id/ssLogo"
-        android:padding="20dp"/>
+        android:padding="20dp"
+        android:text="@string/app_name"
+        android:fontFamily="@font/rastaman"
+        android:textAlignment="center"/>
 
 <!--    The album art goes here, default pic for now-->
     <ImageView

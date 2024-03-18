@@ -16,8 +16,6 @@ import java.io.IOException;
 public class ShiftPlayer extends MediaPlayer {
 
     private boolean isPlaying;
-    private int songLength;
-    private int songProgress;
     final String ENV_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath();
 
     public ShiftPlayer(@NonNull Context context) {
@@ -93,6 +91,10 @@ public class ShiftPlayer extends MediaPlayer {
      */
     public void shift_loadNextSong() {
         // TODO make do the thing lol
+    }
+
+    public double shift_getSongPercentage() {
+        return (double) getCurrentPosition() * 100 /getDuration();
     }
 
 }

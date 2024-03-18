@@ -14,11 +14,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -50,11 +53,9 @@ import androidx.core.app.ActivityCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button startButton;
     private ListView shiftList;
     private static final int PERMISSION_REQUEST_READ_MEDIA_AUDIO = 1;
     private final int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-    private ShiftPlayer shiftPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,46 +63,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findView();
         makeListWork();
-        setupButtonOnClickListener();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        prettyInit();
+
+        if (currentApiVersion >= Build.VERSION_CODES.TIRAMISU) {
             CheckPermission();
-            shiftPlayer = new ShiftPlayer(this);
         } else {
             OldCheckPermission();
             Log.e("OUT OF DATE", "Skill issue get a better phone");
-            int i = 1/0;
         }
-
-//        try {
-//            playMusic("/sample_music.mp3");
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        shiftPlayer.shift_stopMusic();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        shiftPlayer.shift_pausePlay(false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //shiftPlayer.shift_pausePlay(true);
-    }
-
-    private void playMusic(String filePath) throws IOException {
-        shiftPlayer.shift_startMusic(this, filePath);
-        Toast.makeText(this, "Attempting play " + filePath + "... Code: " + shiftPlayer.shift_getIsPlaying(), Toast.LENGTH_SHORT).show();
     }
 
     // Check for and request perms
@@ -131,18 +116,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findView() {
-        startButton = findViewById(R.id.startButton);
         shiftList = findViewById(R.id.shiftList);
-    }
-
-    private void setupButtonOnClickListener() {
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // start button redirects us to the control activity
-                shiftPlayer.shift_pausePlay();
-            }
-        });
     }
 
     private void makeListWork() {
@@ -181,6 +155,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void prettyInit() {
+        View thisView = findViewById(R.id.ssLogo);
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setColor(getColor(R.color.foreGrey));
+        shape.setCornerRadius(20);
+        thisView.setBackground(shape);
     }
 
 }

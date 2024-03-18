@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SoundShift</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+    <string name="shift">Shift</string>
+    <string name="playlist">Playlist</string>
+    <string name="song">Song</string>
 </resources>
