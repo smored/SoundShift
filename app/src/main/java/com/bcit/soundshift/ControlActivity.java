@@ -25,6 +25,8 @@ public class ControlActivity extends AppCompatActivity {
     private Shift currentShift;
     private ArrayList<Integer> whatsPlaying;
     private ShiftPlayer shiftPlayer;
+    private ArrayList<ArrayList<Integer>> playedSongList;
+    private int song_pos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +34,23 @@ public class ControlActivity extends AppCompatActivity {
         setContentView(R.layout.control_activity);
         findView();
         setupButtonOnClickListener();
+        playedSongList = new ArrayList<>();
+
         currentShift = (Shift) getIntent().getSerializableExtra("shift");
         currentShift.transientDatabase(this);
+        currentShift.openDatabase();
+
         shiftPlayer = new ShiftPlayer(this);
+        song_pos = 0;
+        whatsPlaying = currentShift.getNextSong();
+        playedSongList.add(whatsPlaying);
+        PlaySong();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        currentShift.closeDatabase();
     }
 
     private void findView() {
@@ -51,7 +67,23 @@ public class ControlActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // start button redirects us to the control activity
-                lyrics.setText("WOAH!!! did you really like the song that much??!?!?");
+                if(song_pos == 0)
+                {
+                    shiftPlayer.seekTo(0);
+                }
+                else
+                {
+                    if(shiftPlayer.getCurrentPosition() > 1000 * 10)
+                    {
+                        shiftPlayer.seekTo(0);
+                    }
+                    else
+                    {
+                        song_pos--;
+                        whatsPlaying = playedSongList.get(song_pos);
+                        PlaySong();
+                    }
+                }
             }
         });
 
@@ -59,9 +91,7 @@ public class ControlActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // start button redirects us to the control activity
-                lyrics.setText("WOAH!!! did you just PLAY??!?!?");
+                shiftPlayer.shift_pausePlay();
             }
         });
 
@@ -69,27 +99,20 @@ public class ControlActivity extends AppCompatActivity {
         forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                currentShift.openDatabase();
-                whatsPlaying = currentShift.getNextSong();
-                ArrayList<String> whatsPlaying_str = currentShift.getSongAndPlaylistNames(whatsPlaying);
-                lyrics.setText("Current Playlist: " + whatsPlaying_str.get(0) + " Current Song: " + whatsPlaying_str.get(1));
-
-                Bitmap bitmap;
-                bitmap = currentShift.getAlbumImage(whatsPlaying.get(1));
-                coverArt.setImageBitmap(bitmap);
-
-                String path = currentShift.getFilePath(whatsPlaying.get(1));
-
-                try {
-                    playMusic(path);
-                } catch (IOException e) {
-                    Log.e("ERROR", "File not found... ");
+                if (playedSongList.size() - 1 > song_pos)
+                {
+                    whatsPlaying = currentShift.getNextSong();
+                    song_pos++;
+                    playedSongList.set(song_pos, whatsPlaying);
+                    PlaySong();
                 }
-
-                currentShift.closeDatabase();
-
-
+                else
+                {
+                    whatsPlaying = currentShift.getNextSong();
+                    playedSongList.add(whatsPlaying);
+                    song_pos++;
+                    PlaySong();
+                }
             }
         });
     }
@@ -99,6 +122,21 @@ public class ControlActivity extends AppCompatActivity {
         Toast.makeText(this, "Attempting play " + filePath + "... Code: " + shiftPlayer.shift_getIsPlaying(), Toast.LENGTH_SHORT).show();
     }
 
+    private void PlaySong()
+    {
+        ArrayList<String> whatsPlaying_str = currentShift.getSongAndPlaylistNames(whatsPlaying);
+        lyrics.setText("Current Playlist: " + whatsPlaying_str.get(0) + " Current Song: " + whatsPlaying_str.get(1));
 
+        Bitmap bitmap;
+        bitmap = currentShift.getAlbumImage(whatsPlaying.get(1));
+        coverArt.setImageBitmap(bitmap);
 
+        String path = currentShift.getFilePath(whatsPlaying.get(1));
+
+        try {
+            playMusic(path);
+        } catch (IOException e) {
+            Log.e("ERROR", "File not found... ");
+        }
+    }
 }

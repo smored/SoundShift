@@ -204,4 +204,10 @@ public class Shift implements Serializable {
                 "WHERE song.id = ?", song_string));
         return out.get(0).get(0);
     }
+
+    public void setSong(ArrayList<Integer> playlist_and_song)
+    {
+        currentPlaylist_id = playlist_and_song.get(0);
+        currentSong_id = playlist_and_song.get(1);
+    }
 }
