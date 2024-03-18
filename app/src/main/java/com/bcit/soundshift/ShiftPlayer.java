@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -21,12 +22,9 @@ public class ShiftPlayer extends MediaPlayer {
     private int songLength;
     private int songProgress;
 
-    @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     public ShiftPlayer(@NonNull Context context) {
-        super((Context) context);
         this.isPlaying = false;
     }
-
 
 
     /**
@@ -35,7 +33,13 @@ public class ShiftPlayer extends MediaPlayer {
      * @param filePath path of the song on disk
      */
     public void shift_startMusic(Context context, String filePath) throws IOException {
+        if (this.isPlaying()) {
+            Log.w("ShiftPlayer", "Trying to play but already initialized");
+            return;
+        }
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath();
         setDataSource(context, Uri.parse(filePath));
+        Log.i("ShiftPlayer", "Attempting to play file with path: " + filePath);
         prepare();
         start();
         isPlaying = true;
@@ -55,6 +59,19 @@ public class ShiftPlayer extends MediaPlayer {
     }
 
     /**
+     * Overloaded function that allows to set instead of toggle play state
+     * @param forcePlay true = Force Play, false = Force Pause
+     */
+    public void shift_pausePlay (boolean forcePlay) {
+        if (forcePlay) {
+            start();
+        } else {
+            pause();
+        }
+        isPlaying = forcePlay;
+    }
+
+    /**
      * Stops music and releases media player; must call shift_startMusic() to start a new track
      */
     public void shift_stopMusic() {
@@ -70,7 +87,5 @@ public class ShiftPlayer extends MediaPlayer {
     public boolean shift_getIsPlaying() {
         return isPlaying;
     }
-
-
 
 }

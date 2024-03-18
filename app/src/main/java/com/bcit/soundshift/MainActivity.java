@@ -64,10 +64,11 @@ public class MainActivity extends AppCompatActivity {
         makeListWork();
         setupButtonOnClickListener();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CheckPermission();
             shiftPlayer = new ShiftPlayer(this);
         } else {
+            OldCheckPermission();
             Log.e("OUT OF DATE", "Skill issue get a better phone");
         }
 
@@ -77,11 +78,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        shiftPlayer.shift_stopMusic();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        shiftPlayer.shift_pausePlay(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //shiftPlayer.shift_pausePlay(true);
     }
 
     private void playMusic(String filePath) throws IOException {
-        if (shiftPlayer.shift_getIsPlaying()) return; // Only use this function for starting music; Use play/pause function otherwise
         shiftPlayer.shift_startMusic(this, filePath);
         Toast.makeText(this, "Attempting play " + filePath + "... Code: " + shiftPlayer.shift_getIsPlaying(), Toast.LENGTH_SHORT).show();
     }
@@ -100,21 +112,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == PERMISSION_REQUEST_READ_MEDIA_AUDIO) {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Log.i(null, "PERMISSION GRANTED");
-//            } else {
-//                Log.e("ERROR", "PERMISSION DENIED");
-//                while (true) {
-//                    int i = 1 / 0; // you should have granted permission :)
-//                }
-//                }
-//            }
-//        }
-//    }
+    private boolean OldCheckPermission() {
+        // Check if the permission is not granted
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_MEDIA_AUDIO);
+            return false;
+        } else {
+            // Permission is already granted, proceed with accessing the file
+            Log.i(null, "YOU ALREADY HAD FILE PERMISSION");
+            return true;
+        }
+    }
 
     private void findView() {
         startButton = findViewById(R.id.startButton);
@@ -126,13 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // start button redirects us to the control activity
-                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath();
-                String filePath = path + "/sample_music.mp3";
-                try {
-                    playMusic(filePath);
-                } catch (IOException e) {
-                    Log.e("ERROR", "File not found...");
-                }
+                shiftPlayer.shift_pausePlay();
             }
         });
     }
