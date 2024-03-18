@@ -4,6 +4,7 @@ package com.bcit.soundshift;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.view.View;
@@ -31,17 +32,11 @@ public class ShiftPlayer extends MediaPlayer {
     /**
      * Handles creating and starting the music player for a given song path
      * @param context pass in this context
-     * @param songName name of the song on disk
+     * @param filePath path of the song on disk
      */
-    public void shift_startMusic(Context context, String songName) throws IOException {
-//        final String defType = "raw";
-//        int resId = Resources.getSystem().getIdentifier(songPath, defType, context.getPackageName());
-//        if (resId == 0) throw new RuntimeException("Failed to find song with path: " + songPath + ", in: " + defType);
-        //create(context, resId);
-        String musicFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + songName;
-        setDataSource(musicFilePath);
+    public void shift_startMusic(Context context, String filePath) throws IOException {
+        setDataSource(context, Uri.parse(filePath));
         prepare();
-
         start();
         isPlaying = true;
     }
@@ -75,5 +70,7 @@ public class ShiftPlayer extends MediaPlayer {
     public boolean shift_getIsPlaying() {
         return isPlaying;
     }
+
+
 
 }
