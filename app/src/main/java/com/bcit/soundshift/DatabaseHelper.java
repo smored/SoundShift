@@ -172,4 +172,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "SELECT shift_connection.playlist_2_id " +
                     "FROM shift_connection " +
                     "WHERE shift_connection.shift_id = :param1";
+    static final String PlaylistSongArtistNames = "SELECT playlist.playlist, song.title, artist.artist " +
+                    "FROM playlist_songs " +
+                    "INNER JOIN song " +
+                    "ON playlist_songs.song_id = song.id " +
+                    "INNER JOIN playlist " +
+                    "ON playlist_songs.playlist_id = playlist.id " +
+                    "INNER JOIN artist " +
+                    "ON song.artist_id = artist.id " +
+                    "WHERE playlist.id = ? AND song.id = ?";
+
 }

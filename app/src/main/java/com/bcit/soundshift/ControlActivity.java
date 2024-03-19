@@ -132,7 +132,7 @@ public class ControlActivity extends AppCompatActivity {
         ArrayList<String> whatsPlaying_str = currentShift.getSongAndPlaylistNames(whatsPlaying);
         lyrics.setText("Current Playlist: " + whatsPlaying_str.get(0) + " Current Song: " + whatsPlaying_str.get(1));
 
-        api.getLyricsAsync(whatsPlaying_str.get(1), new GeniusApiHelper.LyricsCallback() {
+        api.getLyricsAsync(whatsPlaying_str.get(1) + " " + whatsPlaying_str.get(2), new GeniusApiHelper.LyricsCallback() {
             @Override
             public void onLyricsReceived(String rx) {
                 if (rx != null) {

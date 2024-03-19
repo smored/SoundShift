@@ -1,4 +1,5 @@
 package com.bcit.soundshift;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -142,7 +143,7 @@ public class Shift implements Serializable {
         for (Integer num : id) {
             stringList.add(Integer.toString(num));
         }
-        return sql.cursorToList(sql.executeQuery("SELECT playlist.playlist, song.title FROM song, playlist WHERE playlist.id = ? AND song.id = ?", stringList)).get(0);
+        return sql.cursorToList(sql.executeQuery(sql.PlaylistSongArtistNames, stringList)).get(0);
     }
 
     private void setCurrentPlaylist_id(int id)
