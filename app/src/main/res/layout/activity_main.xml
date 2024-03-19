@@ -20,10 +20,10 @@
         />
 
     <ListView
+        android:id="@+id/shiftList"
         android:padding="20dp"
         android:layout_alignBaseline="@+id/ssLogo"
         android:layout_alignBottom="@+id/prefs"
-        android:id="@+id/shiftList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

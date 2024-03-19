@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/grey"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,33 +14,45 @@
         android:padding="20dp"
         android:text="@string/app_name"
         android:fontFamily="@font/rastaman"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textSize="30dp"
+        android:textColor="@color/purple"/>
 
 <!--    The album art goes here, default pic for now-->
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_below="@+id/ssLogo"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/ic_launcher_background"
         android:id="@+id/albumArt"
+        android:scaleType="fitXY"
         android:padding="20dp"/>
 
 <!--    Lyrics will be displayed here-->
-    <TextView
-        android:id="@+id/lyrics"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="weewooweewoo"
-        android:layout_below="@id/albumArt"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="40dp"
+        android:layout_below="@+id/albumArt"
+        android:layout_above="@+id/bottomBar"
+        >
+        <TextView
+            android:id="@+id/lyrics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:text="@string/lorem"
+            android:textColor="@color/forePurple"/>
+    </ScrollView>
+
+
 
 <!--    Bottom control bar -->
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="85dp"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_launcher_background"
         android:id="@+id/bottomBar"
         android:padding="20dp"/>
 
@@ -56,26 +69,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/playButton"
-            android:text="Forward"/>
+            android:layout_toEndOf="@id/playButton"
+            android:text="@string/skip"/>
 
 <!--        PLAY BUTTON-->
         <Button
+            android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reverse"
-            android:id="@+id/playButton"
             android:layout_centerInParent="true"
-            android:layout_margin="20dp"
-            />
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/play" />
 
 <!--        REVERSE BUTTON-->
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reverse"
+            android:text="@string/back"
             android:id="@+id/reverseButton"
-            android:layout_toLeftOf="@id/playButton"
+            android:layout_toStartOf="@id/playButton"
             android:layout_centerVertical="true"
             />
 

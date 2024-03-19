@@ -2,8 +2,12 @@
     <string name="app_name">SoundShift</string>
     <string name="play">Play</string>
     <string name="pause">Pause</string>
+    <string name="skip">&gt;</string>
+    <string name="back">&lt;</string>
     <string name="stop">Stop</string>
     <string name="shift">Shift</string>
     <string name="playlist">Playlist</string>
     <string name="song">Song</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Venenatis tellus in metus vulputate eu scelerisque. Amet mattis vulputate enim nulla. Nunc non blandit massa enim nec dui nunc mattis enim. Phasellus vestibulum lorem sed risus ultricies tristique. Porttitor leo a diam sollicitudin tempor id eu nisl nunc. Interdum velit laoreet id donec ultrices tincidunt. Mauris a diam maecenas sed enim. Scelerisque eu ultrices vitae auctor eu augue ut lectus. Nec ultrices dui sapien eget mi proin sed. Et tortor consequat id porta nibh.
+        \n\nLectus proin nibh nisl condimentum id. At risus viverra adipiscing at in tellus integer. Dictum at tempor commodo ullamcorper a. Vel orci porta non pulvinar neque. Elit sed vulputate mi sit amet. A diam maecenas sed enim ut sem viverra. Arcu dui vivamus arcu felis. Ut enim blandit volutpat maecenas volutpat blandit aliquam etiam erat. Mauris cursus mattis molestie a iaculis at. Dignissim convallis aenean et tortor at risus viverra. At risus viverra adipiscing at in. Hac habitasse platea dictumst vestibulum rhoncus est pellentesque.</string>
 </resources>

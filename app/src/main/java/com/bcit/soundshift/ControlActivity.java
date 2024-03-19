@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.graphics.Bitmap;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import core.GLA;
@@ -35,6 +35,7 @@ public class ControlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.control_activity);
         findView();
+        prettyInit();
         setupButtonOnClickListener();
         playedSongList = new ArrayList<>();
 
@@ -122,11 +123,6 @@ public class ControlActivity extends AppCompatActivity {
         });
     }
 
-    private void playMusic(String filePath) throws IOException {
-        shiftPlayer.shift_startMusic(this, filePath);
-        Toast.makeText(this, "Attempting play " + filePath + "... Code: " + shiftPlayer.shift_getIsPlaying(), Toast.LENGTH_SHORT).show();
-    }
-
     private void PlaySong()
     {
         ArrayList<String> whatsPlaying_str = currentShift.getSongAndPlaylistNames(whatsPlaying);
@@ -150,9 +146,22 @@ public class ControlActivity extends AppCompatActivity {
         String path = currentShift.getFilePath(whatsPlaying.get(1));
 
         try {
-            playMusic(path);
+            shiftPlayer.shift_startMusic(this, path);
         } catch (IOException e) {
             Log.e("ERROR", "File not found... ");
         }
     }
+
+    public void prettyInit() {
+        View bottomBar = findViewById(R.id.bottomBar);
+        View ssLogo = findViewById(R.id.ssLogo);
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setColor(getColor(R.color.foreGrey));
+        shape.setCornerRadius(40);
+
+        bottomBar.setBackground(shape);
+        ssLogo.setBackground(shape);
+    }
+
 }
