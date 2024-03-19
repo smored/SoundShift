@@ -29,8 +29,17 @@
         android:scaleType="fitXY"
         android:padding="20dp"/>
 
+    <ProgressBar
+        android:id="@+id/songProgress"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/albumArt"
+        android:layout_centerInParent="true"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
+
 <!--    Lyrics will be displayed here-->
     <ScrollView
+        android:id="@+id/lyricsScroller"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="40dp"

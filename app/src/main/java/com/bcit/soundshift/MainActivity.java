@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         } else {
             // Permission is already granted, proceed with accessing the file
-            Log.i(null, "YOU ALREADY HAD FILE PERMISSION");
+            Log.i("MainActivity", "YOU ALREADY HAD FILE PERMISSION");
             return true;
         }
     }
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         } else {
             // Permission is already granted, proceed with accessing the file
-            Log.i(null, "YOU ALREADY HAD FILE PERMISSION");
+            Log.i("MainActivity", "YOU ALREADY HAD FILE PERMISSION");
             return true;
         }
     }

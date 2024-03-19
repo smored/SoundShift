@@ -1,20 +1,21 @@
 package com.bcit.soundshift;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import core.GLA;
 
 public class ControlActivity extends AppCompatActivity {
@@ -29,6 +30,7 @@ public class ControlActivity extends AppCompatActivity {
     private ArrayList<ArrayList<Integer>> playedSongList;
     private int song_pos;
     GeniusApiHelper api;
+    boolean running;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,9 @@ public class ControlActivity extends AppCompatActivity {
         api = new GeniusApiHelper(new GLA());
 
         shiftPlayer = new ShiftPlayer(this);
+
+        updateProgress();
+
         song_pos = 0;
         whatsPlaying = currentShift.getNextSong();
         playedSongList.add(whatsPlaying);
@@ -55,6 +60,7 @@ public class ControlActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        running = false;
         currentShift.closeDatabase();
         shiftPlayer.shift_stopMusic();
     }
@@ -98,6 +104,8 @@ public class ControlActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 shiftPlayer.shift_pausePlay();
+                Boolean test = shiftPlayer.shift_getIsPlaying();
+                playButton.setText(test.toString());
             }
         });
 
@@ -148,11 +156,11 @@ public class ControlActivity extends AppCompatActivity {
         try {
             shiftPlayer.shift_startMusic(this, path);
         } catch (IOException e) {
-            Log.e("ERROR", "File not found... ");
+            Log.e("ControlActivity", "File not found... ");
         }
     }
 
-    public void prettyInit() {
+    private void prettyInit() {
         View bottomBar = findViewById(R.id.bottomBar);
         View ssLogo = findViewById(R.id.ssLogo);
         GradientDrawable shape = new GradientDrawable();
@@ -162,6 +170,28 @@ public class ControlActivity extends AppCompatActivity {
 
         bottomBar.setBackground(shape);
         ssLogo.setBackground(shape);
+    }
+
+    private void updateProgress() {
+        running = true;
+        Handler handler = new Handler();
+        ProgressBar progressBar = findViewById(R.id.songProgress);
+        AtomicInteger progressPercent = new AtomicInteger();
+        progressBar.setActivated(true);
+        progressBar.setIndeterminate(false);
+
+        new Thread(() -> {
+            while(running) {
+                progressPercent.set((int) shiftPlayer.shift_getSongPercentage());
+                handler.post(() -> progressBar.setProgress(progressPercent.get()));
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
     }
 
 }
