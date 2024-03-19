@@ -2,6 +2,7 @@ package com.bcit.soundshift;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -12,9 +13,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import core.GLA;
 
 public class ControlActivity extends AppCompatActivity {
     private TextView lyrics;
@@ -27,6 +28,7 @@ public class ControlActivity extends AppCompatActivity {
     private ShiftPlayer shiftPlayer;
     private ArrayList<ArrayList<Integer>> playedSongList;
     private int song_pos;
+    GeniusApiHelper api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class ControlActivity extends AppCompatActivity {
         currentShift.transientDatabase(this);
         currentShift.openDatabase();
 
+        api = new GeniusApiHelper(new GLA());
+
         shiftPlayer = new ShiftPlayer(this);
         song_pos = 0;
         whatsPlaying = currentShift.getNextSong();
@@ -51,6 +55,7 @@ public class ControlActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         currentShift.closeDatabase();
+        shiftPlayer.shift_stopMusic();
     }
 
     private void findView() {
@@ -126,6 +131,17 @@ public class ControlActivity extends AppCompatActivity {
     {
         ArrayList<String> whatsPlaying_str = currentShift.getSongAndPlaylistNames(whatsPlaying);
         lyrics.setText("Current Playlist: " + whatsPlaying_str.get(0) + " Current Song: " + whatsPlaying_str.get(1));
+
+        api.getLyricsAsync(whatsPlaying_str.get(1), new GeniusApiHelper.LyricsCallback() {
+            @Override
+            public void onLyricsReceived(String rx) {
+                if (rx != null) {
+                    lyrics.setText(rx);
+                } else {
+                    lyrics.setText("No lyrics found for this song");
+                }
+            }
+        });
 
         Bitmap bitmap;
         bitmap = currentShift.getAlbumImage(whatsPlaying.get(1));

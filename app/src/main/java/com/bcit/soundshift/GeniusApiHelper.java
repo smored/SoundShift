@@ -65,7 +65,7 @@ public class GeniusApiHelper {
 
     private static long getSongId(GLA gla, String songTitle) {
         try {
-            SongSearch songSearch = new SongSearch(gla, "despacito");
+            SongSearch songSearch = new SongSearch(gla, songTitle);
             LinkedList<SongSearch.Hit> hits = songSearch.getHits();
             if (!hits.isEmpty()) {
                 // Assuming the first hit is the most relevant one
