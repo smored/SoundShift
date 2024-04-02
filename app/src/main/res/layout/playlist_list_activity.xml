@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--    NOT TO BE CONFUSED WITH PLAYLIST LIST    -->
-<!--    This is for adding songs to your playlists    -->
+<!--    NOT TO BE CONFUSED WITH PLAYLIST SONG ADDER    -->
+<!--    This is for listing all your playlists    -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/grey"
@@ -12,18 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:id="@+id/playlistName"
+        android:id="@+id/topBarText"
         android:padding="20dp"
-        android:text="@string/err"
+        android:text="@string/playlists"
         android:fontFamily="@font/rastaman"
         android:textAlignment="center"
         android:textSize="30dp"
         android:textColor="@color/purple"/>
 
     <ListView
-        android:id="@+id/songList"
+        android:id="@+id/playlistList"
         android:padding="0dp"
-        android:layout_alignBaseline="@+id/playlistName"
+        android:layout_alignBaseline="@+id/topBarText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -31,12 +31,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/songList"
+        android:layout_alignTop="@+id/playlistList"
         android:paddingHorizontal="20dp">
 
-        <!--        ADD SONG BUTTON     -->
+        <!--        ADD PLAYLIST BUTTON     -->
         <Button
-            android:id="@+id/addSong"
+            android:id="@+id/addPlaylist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -44,9 +44,9 @@
             android:text="@string/addSong"
             android:textSize="40dp"/>
 
-        <!--        REMOVE SONG BUTTON  -->
+        <!--        REMOVE PLAYLIST BUTTON  -->
         <Button
-            android:id="@+id/removeSong"
+            android:id="@+id/removePlaylist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
