@@ -54,6 +54,7 @@ import androidx.core.app.ActivityCompat;
 public class MainActivity extends AppCompatActivity {
 
     private ListView shiftList;
+    private Button prefsButton, playlistButton, songButton;
     private static final int PERMISSION_REQUEST_READ_MEDIA_AUDIO = 1;
     private final int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 
@@ -117,6 +118,34 @@ public class MainActivity extends AppCompatActivity {
 
     private void findView() {
         shiftList = findViewById(R.id.shiftList);
+        prefsButton = findViewById(R.id.prefs);
+        songButton = findViewById(R.id.toSongScreen);
+        playlistButton = findViewById(R.id.toPlaylist2);
+
+        // temporary thing so i can test shift activity
+        prefsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ShiftScreenActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        songButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Song.class);
+                startActivity(intent);
+            }
+        });
+
+        playlistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Playlist.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void makeListWork() {
@@ -156,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     public void prettyInit() {
         View thisView = findViewById(R.id.ssLogo);

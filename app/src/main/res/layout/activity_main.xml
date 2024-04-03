@@ -35,16 +35,44 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:padding="20dp"
-        android:layout_marginBottom="20dp"
 
-        android:text="O"
+        android:layout_marginBottom="20dp"
+        android:background="@color/white"
         android:fontFamily="@font/rastaman"
+        android:padding="20dp"
+        android:text="O"
         android:textAlignment="center"
         android:textColor="@color/purple"
-        android:textSize="30dp"
-        android:background="@color/white"
-        />
+        android:textSize="30dp" />
 
+
+    <Button
+        android:id="@+id/toSongScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:background="@color/white"
+        android:fontFamily="@font/rastaman"
+        android:padding="5dp"
+        android:layout_alignParentRight="true"
+        android:text="to song"
+        android:textAlignment="center"
+        android:textColor="@color/purple"
+        android:textSize="10dp" />
+
+    <Button
+        android:id="@+id/toPlaylist2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:background="@color/white"
+        android:fontFamily="@font/rastaman"
+        android:padding="5dp"
+        android:text="to playlist2"
+        android:textAlignment="center"
+        android:textColor="@color/purple"
+        android:textSize="10dp" />
 
 </RelativeLayout>

@@ -25,6 +25,11 @@
             android:parentActivityName=".MainActivity"
             android:label="Controls" />
         <activity
+            android:name=".ShiftScreenActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:label="Controls" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -18,12 +18,24 @@
         android:textSize="30dp"
         android:textColor="@color/purple"/>
 
-    <LinearLayout
+    <GridLayout
+        android:id="@+id/shiftLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginVertical="75dp"/>
+        android:layout_marginVertical="75dp">
 
+<!--        <Button-->
+<!--            android:id="@+id/testButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
+    </GridLayout>
 
+    <LinearLayout
+        android:id="@+id/connectorID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
 
     <!--    Controls -->
@@ -42,6 +54,27 @@
             android:layout_alignParentBottom="true"
             android:text="@string/addSong"
             android:textSize="40dp"/>
+
+        <!--         CONNECT BUTTON      -->
+        <ToggleButton
+            android:id="@+id/toggleConnectMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textOff="@string/connectOff"
+            android:textOn="@string/connectOn"
+            android:fontFamily="@font/rastaman"
+            android:textColor="@color/forePurple"
+            android:textSize="40dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/toggleConnectMode"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:text="@string/connectString"/>
 
         <!--        REMOVE SHIFT BUTTON  -->
         <Button
