@@ -38,5 +38,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.github.scribejava:scribejava-apis:8.3.3")
     implementation("com.github.LowLevelSubmarine:GeniusLyricsAPI:1.0.3")
+    implementation("de.u-mass:lastfm-java:0.1.2")
 
 }
