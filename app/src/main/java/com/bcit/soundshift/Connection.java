@@ -3,13 +3,13 @@ package com.bcit.soundshift;
 import android.widget.Button;
 
 public class Connection {
-    private String ID;
+    private int ID;
     private Button startButton;
     private Button endButton;
     private int startX, startY, endX, endY;
     private double weighting;
 
-    public Connection(String ID, Button startButton, Button endButton) {
+    public Connection(int ID, Button startButton, Button endButton) {
         this.ID = ID;
         this.startButton = startButton;
         this.endButton = endButton;
@@ -82,5 +82,9 @@ public class Connection {
 
     public void setWeighting(double weighting) {
         this.weighting = weighting;
+    }
+
+    public int getID() {
+        return ID;
     }
 }
