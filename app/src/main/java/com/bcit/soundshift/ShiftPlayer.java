@@ -35,7 +35,7 @@ public class ShiftPlayer extends MediaPlayer {
             Log.i("ShiftPlayer", "New track requested, switching over");
             reset(); // Reset MediaPlayer state so we can load a new song
         }
-        String path = ENV_PATH + filePath;
+        String path = filePath;
         Log.i("ShiftPlayer", "Attempting to play file with path: " + path);
         setDataSource(context, Uri.parse(path));
         prepare();

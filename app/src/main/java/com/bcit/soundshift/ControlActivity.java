@@ -43,7 +43,6 @@ public class ControlActivity extends AppCompatActivity {
 
         currentShift = (Shift) getIntent().getSerializableExtra("shift");
         currentShift.transientDatabase(this);
-        currentShift.openDatabase();
 
         api = new GeniusApiHelper(new GLA());
 
@@ -61,7 +60,6 @@ public class ControlActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         running = false;
-        currentShift.closeDatabase();
         shiftPlayer.shift_stopMusic();
     }
 
@@ -104,8 +102,6 @@ public class ControlActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 shiftPlayer.shift_pausePlay();
-                Boolean test = shiftPlayer.shift_getIsPlaying();
-                playButton.setText(test.toString());
             }
         });
 
@@ -133,6 +129,10 @@ public class ControlActivity extends AppCompatActivity {
 
     private void PlaySong()
     {
+        if(!shiftPlayer.shift_getIsPlaying())
+        {
+            shiftPlayer.shift_pausePlay();
+        }
         ArrayList<String> whatsPlaying_str = currentShift.getSongAndPlaylistNames(whatsPlaying);
         lyrics.setText("Current Playlist: " + whatsPlaying_str.get(0) + " Current Song: " + whatsPlaying_str.get(1));
 

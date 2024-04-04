@@ -23,9 +23,17 @@ public class LastFMApiHelper {
 
     public byte[] retrieveAlbumCover(String artist, String albumName) {
         try {
+            artist = artist;
+            albumName = albumName;
             // Get album cover art URL
-            Album album = Album.getInfo(artist, albumName, API_KEY);
-            String coverArtUrl = album.getImageURL(ImageSize.LARGE);
+            String coverArtUrl;
+            try
+            {
+                Album album = Album.getInfo(artist, albumName, API_KEY);
+                coverArtUrl = album.getImageURL(ImageSize.LARGE);
+            } catch (NumberFormatException e) {
+                return null;
+            }
 
             // Get image bytes from URL
             URL url = new URL(coverArtUrl);

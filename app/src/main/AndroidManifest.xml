@@ -25,10 +25,25 @@
             android:parentActivityName=".MainActivity"
             android:label="Controls" />
         <activity
+            android:name=".SongActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:label="Songs" />
+        <activity
+            android:name=".PlaylistActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:label="Playlists" />
+        <activity
+            android:name=".PlaylistListActivity"
+            android:exported="false"
+            android:parentActivityName=".PlaylistActivity"
+            android:label="PlaylistList" />
+        <activity
             android:name=".ShiftScreenActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity"
-            android:label="Controls" />
+            android:label="Shifts" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

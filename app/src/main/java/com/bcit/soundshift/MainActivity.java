@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         songButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Song.class);
+                Intent intent = new Intent(MainActivity.this, SongActivity.class);
                 startActivity(intent);
             }
         });
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         playlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Playlist.class);
+                Intent intent = new Intent(MainActivity.this, PlaylistListActivity.class);
                 startActivity(intent);
             }
         });
@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
         DatabaseHelper sql = new DatabaseHelper(this);
         try {
             sql.createDataBase();
-            sql.openDatabase();
             try {
                 ArrayList<ArrayList<String>> results = sql.cursorToList(sql.executeQuery("SELECT * FROM shift"));
                 for (int i = 0; i < results.size(); i++) {

@@ -32,14 +32,6 @@ public class Shift implements Serializable {
         sql = new DatabaseHelper(context);
     }
 
-    public void openDatabase()
-    {
-        sql.openDatabase();
-    }
-    public void closeDatabase()
-    {
-        sql.close();
-    }
     private class song
     {
         public String title;
@@ -143,7 +135,7 @@ public class Shift implements Serializable {
         for (Integer num : id) {
             stringList.add(Integer.toString(num));
         }
-        return sql.cursorToList(sql.executeQuery(sql.PlaylistSongArtistNames, stringList)).get(0);
+        return sql.cursorToSingleList(sql.executeQuery(sql.replaceNamedParams(sql.PlaylistSongArtistNames, stringList)));
     }
 
     private void setCurrentPlaylist_id(int id)
@@ -191,6 +183,7 @@ public class Shift implements Serializable {
         byte[] blobData;
         if (cursor != null && cursor.moveToFirst()) {
            blobData  = cursor.getBlob(0);
+           if (blobData == null) return null;
            return BitmapFactory.decodeByteArray(blobData, 0, blobData.length);
         }
         return null;
@@ -202,7 +195,7 @@ public class Shift implements Serializable {
         song_string.add(Integer.toString(song_id));
         ArrayList<ArrayList<String>> out = sql.cursorToList(sql.executeQuery("SELECT song.filename " +
                 "FROM song " +
-                "WHERE song.id = ?", song_string));
+                "WHERE song.id = " + song_string.get(0)));
         return out.get(0).get(0);
     }
 
