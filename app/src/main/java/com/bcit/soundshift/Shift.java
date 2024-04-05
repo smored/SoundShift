@@ -32,6 +32,87 @@ public class Shift implements Serializable {
         sql = new DatabaseHelper(context);
     }
 
+    public String getPlaylistName(int playlistId) {
+        return sql.cursorToSingleColumn(sql.executeQuery("SELECT playlist from playlist WHERE id = " + playlistId));
+    }
+
+    public ArrayList<connection> getConnections(int id) {
+        ArrayList<ArrayList<String>> conns;
+        conns = sql.cursorToList(sql.executeQuery("SELECT playlist_1_id, playlist_2_id, weight FROM shift_connection WHERE shift_id = " + id));
+
+        ArrayList<connection> connectionList = new ArrayList<>();
+
+        // Iterate through each inner ArrayList<String>
+        for (ArrayList<String> inner : conns) {
+            connection convertedInner = new connection();
+
+            convertedInner.playlist_1_id = Integer.parseInt(inner.get(0));
+            convertedInner.playlist_2_id = Integer.parseInt(inner.get(1));
+            convertedInner.weight = Float.parseFloat(inner.get(2));
+
+            connectionList.add(convertedInner);
+        }
+        return connectionList;
+    }
+
+    public void addNewConnection(int playlist1, int playlist2, float weight) {
+        sql.addNewShiftConnection(ID, playlist1, playlist2, weight);
+    }
+
+
+    public void removeConnection(int playlist_1, int playlist_2) {
+        sql.removeShiftConnection(ID, playlist_1, playlist_2);
+    }
+
+    public ArrayList<Integer> getAllPlaylists() {
+        ArrayList<ArrayList<String>> list = sql.cursorToList(sql.executeQuery("SELECT playlist_1_id, playlist_2_id FROM shift_connection WHERE shift_id = " + ID));
+        ArrayList<Integer> results = new ArrayList<>();
+
+        outer:
+        for (ArrayList<String> inner : list)
+        {
+            for(Integer current : results)
+            {
+                if(current == Integer.parseInt(inner.get(0)))
+                {
+                    continue outer;
+                }
+            }
+            results.add(Integer.parseInt(inner.get(0)));
+        }
+        outer:
+        for (ArrayList<String> inner : list)
+        {
+            for(Integer current : results)
+            {
+                if(current == Integer.parseInt(inner.get(1)))
+                {
+                    continue outer;
+                }
+            }
+            results.add(Integer.parseInt(inner.get(1)));
+        }
+        return results;
+    }
+
+    public class connection
+    {
+        public int playlist_1_id;
+        public int playlist_2_id;
+        public float weight;
+
+        public connection()
+        {
+
+        }
+        public connection(int p1, int p2, float weight)
+        {
+            playlist_1_id = p1;
+            playlist_2_id = p2;
+            this.weight = weight;
+        }
+    }
+
     private class song
     {
         public String title;

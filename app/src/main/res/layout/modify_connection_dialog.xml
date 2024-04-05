@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="wrap_content">
+
+    <!-- Weight EditText -->
+    <TextView
+        android:id="@+id/TextWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Weight: " />
+    <EditText
+        android:id="@+id/editWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/TextWeight"
+        android:hint="Enter weight"
+        android:inputType="numberDecimal" />
+
+    <!-- Cancel Button -->
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:layout_below="@id/editWeight"
+        android:text="Cancel" />
+
+    <!-- Accept Button -->
+    <Button
+        android:id="@+id/btnAccept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:layout_below="@id/editWeight"
+        android:layout_toRightOf="@id/btnCancel"
+        android:text="Accept" />
+
+    <!-- Remove Button -->
+    <Button
+        android:id="@+id/btnRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editWeight"
+        android:padding="4dp"
+        android:layout_toRightOf="@id/btnAccept"
+        android:text="Remove" />
+</RelativeLayout>

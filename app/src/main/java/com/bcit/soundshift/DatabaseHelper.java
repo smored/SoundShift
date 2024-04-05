@@ -258,7 +258,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return columnDataTypes;
     }
 
-    public void addNewShiftConnection(int shiftId, int playlist1Id, int playlist2Id, int weight) {
+    public void addNewShiftConnection(int shiftId, int playlist1Id, int playlist2Id, float weight) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -587,5 +587,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.close();
         return id;
+    }
+
+
+    public void removeShiftConnection(int shiftId, int playlist1Id, int playlist2Id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Execute an SQL DELETE query to remove the shift connection record with the given parameters
+        db.delete(TABLE_SHIFT_CONNECTION,
+                SHIFT_ID_COL + " = ? AND " +
+                        PLAYLIST_1_ID_COL + " = ? AND " +
+                        PLAYLIST_2_ID_COL + " = ?",
+                new String[]{String.valueOf(shiftId), String.valueOf(playlist1Id), String.valueOf(playlist2Id)});
+        db.close();
     }
 }

@@ -1,6 +1,7 @@
 package com.bcit.soundshift;
 
 import android.content.Context;
+import android.util.AttributeSet;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,14 @@ public class ShiftButton extends androidx.appcompat.widget.AppCompatButton {
         connection_list = new ArrayList<>();
         id = -1;
         name = "Why you here?";
+    }
+
+    public ShiftButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public ShiftButton(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     public ShiftButton(Context context, int id, String name) {

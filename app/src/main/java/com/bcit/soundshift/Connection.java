@@ -4,43 +4,44 @@ import android.widget.Button;
 
 public class Connection {
     private int ID;
-    private Button startButton;
-    private Button endButton;
+    private ShiftButton startButton;
+    private ShiftButton endButton;
     private int startX, startY, endX, endY;
-    private double weighting;
+    private float weighting;
 
-    public Connection(int ID, Button startButton, Button endButton) {
+    public Connection(int ID, ShiftButton startButton, ShiftButton endButton, float weight) {
         this.ID = ID;
         this.startButton = startButton;
         this.endButton = endButton;
+        this.weighting = weight;
 
         calcLocation();
     }
 
-    private void calcLocation() {
+    public void calcLocation() {
         int[] location1 = new int[2];
         int[] location2 = new int[2];
         startButton.getLocationOnScreen(location1);
         endButton.getLocationOnScreen(location2);
-        startX = location1[0];
-        startY = location1[1];
-        endX = location2[0];
-        endY = location2[1];
+        startX = location1[0] + startButton.getWidth() / 2;
+        startY = location1[1] - startButton.getHeight() / 8;
+        endX = location2[0] + endButton.getWidth() / 2;
+        endY = location2[1] - endButton.getHeight() / 8;
     }
 
-    public Button getStartButton() {
+    public ShiftButton getStartButton() {
         return startButton;
     }
 
-    public void setStartButton(Button startButton) {
+    public void setStartButton(ShiftButton startButton) {
         this.startButton = startButton;
     }
 
-    public Button getEndButton() {
+    public ShiftButton getEndButton() {
         return endButton;
     }
 
-    public void setEndButton(Button endButton) {
+    public void setEndButton(ShiftButton endButton) {
         this.endButton = endButton;
     }
 
@@ -76,11 +77,11 @@ public class Connection {
         this.endY = endY;
     }
 
-    public double getWeighting() {
+    public float getWeighting() {
         return weighting;
     }
 
-    public void setWeighting(double weighting) {
+    public void setWeighting(float weighting) {
         this.weighting = weighting;
     }
 

@@ -11,7 +11,9 @@ import androidx.core.content.ContextCompat;
 
 import androidx.annotation.NonNull;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Color;
@@ -20,11 +22,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.File;
@@ -126,8 +130,7 @@ public class MainActivity extends AppCompatActivity {
         prefsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ShiftScreenActivity.class);
-                startActivity(intent);
+                addShift();
             }
         });
 
@@ -146,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     private void makeListWork() {
@@ -154,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
         DatabaseHelper sql = new DatabaseHelper(this);
         try {
-            sql.createDataBase();
+            //sql.createDataBase();
             try {
                 ArrayList<ArrayList<String>> results = sql.cursorToList(sql.executeQuery("SELECT * FROM shift"));
                 for (int i = 0; i < results.size(); i++) {
@@ -167,13 +171,12 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("An exception occurred: " + e.getMessage());
         }
 
-        ArrayAdapter<Shift> shiftAdapter = new ArrayAdapter<Shift>(this, android.R.layout.simple_list_item_1, shifts);
+        CustomAdapter<Shift> shiftAdapter = new CustomAdapter<Shift>(this, R.layout.shift_list, shifts);
         shiftList.setAdapter(shiftAdapter);
 
-        // Set click listener for the ListView
-        shiftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        shiftAdapter.setTextClickListener(new CustomAdapter.OnTextClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onTextClick(View view, int position) {
                 // Retrieve the Shift object corresponding to the clicked position
                 Shift clickedShift = shifts.get(position);
 
@@ -183,10 +186,90 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        shiftAdapter.setShiftButtonClickListener(new CustomAdapter.OnShiftButtonClickListener() {
+            @Override
+            public void onShiftButtonClick(View view, int position) {
+                // Retrieve the Shift object corresponding to the clicked position
+                Shift clickedShift = shifts.get(position);
+
+                // Start the next activity and pass the Shift object as an extra
+                Intent intent = new Intent(MainActivity.this, ShiftScreenActivity.class);
+                intent.putExtra("shift", clickedShift);
+                startActivity(intent);
+            }
+        });
+
+        shiftAdapter.setRemoveClickListener(new CustomAdapter.OnRemoveClickListener() {
+            @Override
+            public void onRemoveClick(View view, int position) {
+                Shift clickedShift = shifts.get(position);
+                showDeleteConfirmationDialog(clickedShift);
+            }
+        });
     }
 
 
 
+    private void showDeleteConfirmationDialog(Shift shift) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Confirmation")
+                .setMessage("Are you sure you want to delete this?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        DatabaseHelper sql = new DatabaseHelper(MainActivity.this);
+
+                        sql.removeShift(shift.getID());
+                        makeListWork();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User canceled the delete action
+                    }
+                })
+                .show();
+    }
+
+    private void addShift()
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.shift_dialog_input, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptView);
+
+        final EditText shiftName = promptView.findViewById(R.id.add_shiftname);
+
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String sn = shiftName.getText().toString();
+
+                        if(sn == null)
+                        {
+                            Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT);
+                        }
+                        else
+                        {
+                            DatabaseHelper sql = new DatabaseHelper(MainActivity.this);
+                            sql.addNewShift(sn);
+                        }
+                        makeListWork();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
     public void prettyInit() {
         View thisView = findViewById(R.id.ssLogo);
         GradientDrawable shape = new GradientDrawable();

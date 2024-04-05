@@ -8,4 +8,5 @@
     <color name="grey">#2e2d2d</color>
     <color name="foreGrey">#545252</color>
     <color name="red">#FF0000</color>
+    <color name="darkRed">#801010</color>
 </resources>

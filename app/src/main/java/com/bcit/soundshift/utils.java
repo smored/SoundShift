@@ -27,6 +27,16 @@ public class utils
         ArrayList<EditText> editTextList = new ArrayList<>(); // Store references to EditText fields
 
         for (String columnName : columnNames) {
+            ArrayList<String> param = new ArrayList<>();
+            param.add(columnName);
+            param.add(tablename);
+            param.add(Integer.toString(id));
+            String current = sql.cursorToSingleColumn(sql.executeQuery(sql.replaceNamedParams("SELECT :param1 FROM :param2 WHERE id = :param3", param)));
+
+            if (current.toLowerCase().contains("id"))
+            {
+                continue;
+            }
             // Add TextView for column name
             TextView columnNameTextView = new TextView(context);
             columnNameTextView.setText(columnName);
@@ -35,11 +45,9 @@ public class utils
             // Add EditText for data entry
             EditText editText = new EditText(context);
             editText.setHint("Enter " + columnName);
-            ArrayList<String> param = new ArrayList<>();
-            param.add(columnName);
-            param.add(tablename);
-            param.add(Integer.toString(id));
-            String current = sql.cursorToSingleColumn(sql.executeQuery(sql.replaceNamedParams("SELECT :param1 FROM :param2 WHERE id = :param3", param)));
+
+
+
             // Add other customization for the EditText as needed
             editText.setText(current);
             editContainer.addView(editText);
@@ -71,4 +79,5 @@ public class utils
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
 }

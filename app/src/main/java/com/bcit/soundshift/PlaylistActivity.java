@@ -10,8 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -175,7 +178,7 @@ public class PlaylistActivity extends AppCompatActivity {
                         sql.addNewPlaylistSong(playlist.getId(), selectedSong.getId());
                     }
                 }
-                sql.writeToDownloads();
+                //sql.writeToDownloads();
                 updateSongList();
             }
         });
@@ -190,5 +193,7 @@ public class PlaylistActivity extends AppCompatActivity {
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
     }
+
+
 
 }
