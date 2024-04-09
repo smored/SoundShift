@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--    Top bar here    -->
+    <!-- Top bar here -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,40 +18,40 @@
         android:textSize="30dp"
         android:textColor="@color/purple"/>
 
+    <!-- ListView -->
     <ListView
         android:id="@+id/songList"
         android:padding="0dp"
-        android:layout_alignBaseline="@+id/topBarText"
+        android:layout_below="@id/topBarText"
+        android:layout_above="@id/relativeLayoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!--    Controls -->
+    <!-- Controls -->
     <RelativeLayout
         android:layout_width="match_parent"
+        android:id="@+id/relativeLayoutButtons"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/songList"
+        android:layout_alignParentBottom="true"
         android:paddingHorizontal="20dp">
 
-        <!--        ADD SONG BUTTON     -->
+        <!-- ADD SONG BUTTON -->
         <Button
             android:id="@+id/addSong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
             android:text="@string/addSong"
             android:textSize="40dp"/>
 
-        <!--        REMOVE SONG BUTTON  -->
+        <!-- REMOVE SONG BUTTON -->
         <Button
             android:id="@+id/removeSong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
             android:text="@string/removeSong"
             android:textSize="40dp"/>
-
 
     </RelativeLayout>
 

@@ -19,7 +19,7 @@ public class Constants {
     // DRAW CONNETIONS -------------------------------------------------------------------------------------------------------
     public static final int TOUCH_THRESHOLD = 25; // Buffer for making the buttons a little bigger and easier to touch
     public static final int SIDE_BUTTON_THRESHOLD = 200; // Controls how easily the connection points will snap to the sides
-    public static final int BUTTON_HEIGHT_FIX = +12; // Manual fix to the lines being slightly misaligned
+    public static final int BUTTON_HEIGHT_FIX = +67; // Manual fix to the lines being slightly misaligned
     public static final int TEXTSIZE = 40; // Size of Text
     public static final int CIRCLESIZE = 15; // How big to draw the connector circles
     public static final int STROKEWIDTH = 7; // Default Stroke Width

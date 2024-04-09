@@ -46,12 +46,14 @@ public class ShiftScreenActivity extends AppCompatActivity {
     private Shift currentShift;
     private int insert_pos_x;
     private int insert_pos_y;
+    private boolean initialBool;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shift_screen_activity);
+        initialBool = true;
 
         currentShift = (Shift) getIntent().getSerializableExtra("shift");
         currentShift.transientDatabase(this);
@@ -78,6 +80,7 @@ public class ShiftScreenActivity extends AppCompatActivity {
         setupButtonOnClickListener();
 
         shiftInit();
+        initialBool = false;
     }
 
     private void shiftInit() {
@@ -216,18 +219,31 @@ public class ShiftScreenActivity extends AppCompatActivity {
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.setGravity(Gravity.CENTER);
-        layoutParams.rowSpec = GridLayout.spec(insert_pos_y); // TODO: figure this grid crap out later
-        layoutParams.columnSpec = GridLayout.spec(insert_pos_x);
 
-        if(insert_pos_x < 4)
+        if(initialBool)
         {
-            insert_pos_x += 1;
+            layoutParams.rowSpec = GridLayout.spec(insert_pos_y); // TODO: figure this grid crap out later
+            layoutParams.columnSpec = GridLayout.spec(insert_pos_x);
         }
         else
         {
-            insert_pos_x = 1;
-            insert_pos_y += 1;
+            layoutParams.rowSpec = GridLayout.spec(1); // TODO: figure this grid crap out later
+            layoutParams.columnSpec = GridLayout.spec(1);
         }
+
+        if(initialBool)
+        {
+            if(insert_pos_x < 4)
+            {
+                insert_pos_x += 1;
+            }
+            else
+            {
+                insert_pos_x = 1;
+                insert_pos_y += 1;
+            }
+        }
+
         parentLayout.addView(latestButton, layoutParams);
 
     }
