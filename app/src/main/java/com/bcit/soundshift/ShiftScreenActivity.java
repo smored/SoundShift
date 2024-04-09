@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ShiftScreenActivity extends AppCompatActivity {
-    private final String TAG = "ShiftScreenActivity";
     private Button addButton, removeButton;
     private TextView title;
     private ToggleButton connectorToggle;
@@ -113,7 +112,6 @@ public class ShiftScreenActivity extends AppCompatActivity {
         return newButton;
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -122,7 +120,7 @@ public class ShiftScreenActivity extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility") // hehe
     private void insertPlaylist(int id, String name) {
-        Log.i(TAG, "Inserting new blank shift...");
+        Log.i(Constants.SHIFTSCREENACTIVITY_TAG, "Inserting new blank shift...");
 
         // make new button
         buttonArrayList.add(new ShiftButton(this, id, name));
@@ -130,6 +128,7 @@ public class ShiftScreenActivity extends AppCompatActivity {
         ShiftButton latestButton = buttonArrayList.get(buttonArrayList.size() - 1);
 
         latestButton.setText(name);
+        latestButton.setTextSize(Constants.TEXTSIZE/3);
         latestButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -209,34 +208,10 @@ public class ShiftScreenActivity extends AppCompatActivity {
                 {
                     utils.displayEntryData(ShiftScreenActivity.this, "playlist", button.id);
                 }
-                /*
-                drawConnection.invalidate();
-                if (connectorToggleBool) {
-                    // connect doohickeys
-                    if (buttonsLastClicked.size() < 2) {
-                        buttonsLastClicked.add(latestButton);
-                    } else if (buttonsLastClicked.size() == 2) {
-                        if (buttonsLastClicked.get(0) == buttonsLastClicked.get(1)) {
-                            Log.e(TAG, "button cant connect to itself");
-                            newConnection(buttonsLastClicked.get(0), buttonsLastClicked.get(1), 0.3f);
-                            buttonsLastClicked.clear();
-                            return;
-                        }
-                        newConnection(buttonsLastClicked.get(0), buttonsLastClicked.get(1), 0.2f);
-                        buttonsLastClicked.clear();
-                    } else {
-                        Log.wtf(TAG, "More elements than expected in buttonsTemp");
-                        buttonsLastClicked.clear();
-                    }
-                } else {
-                    buttonsLastClicked.clear();
-                    // open playlist menu
-                }
-                */
             }
         });
 
-        Log.i(TAG, "Adding view...");
+        Log.i(Constants.SHIFTSCREENACTIVITY_TAG, "Adding view...");
         GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -350,9 +325,9 @@ public class ShiftScreenActivity extends AppCompatActivity {
             @Override
             public void onConnectionClick(Connection connectionId) {
                 // Handle the click event for the connection
-                Log.d(TAG, "Connection clicked: " + connectionId);
+                Log.d(Constants.SHIFTSCREENACTIVITY_TAG, "Connection clicked: " + connectionId);
                 modifyConnection(connectionId);
-                Log.d(TAG, "Going Crazy");
+                Log.d(Constants.SHIFTSCREENACTIVITY_TAG, "Going Crazy");
             }
         });
     }
@@ -421,7 +396,7 @@ public class ShiftScreenActivity extends AppCompatActivity {
             for (int i = 0; i < results.size(); i++) {
                 try {
                     for(ShiftButton alreadyAdded : buttonArrayList) {
-                        Log.i(TAG, "WHY DOESNT THIS WORK ID: " + alreadyAdded.id + " ID: " + results.get(i).get(0));
+                        Log.i(Constants.SHIFTSCREENACTIVITY_TAG, "WHY DOESNT THIS WORK ID: " + alreadyAdded.id + " ID: " + results.get(i).get(0));
                         if (alreadyAdded.id == Integer.parseInt(results.get(i).get(0))) {
                             continue results;
                         }
@@ -488,7 +463,7 @@ public class ShiftScreenActivity extends AppCompatActivity {
         Button btnCancel = dialogView.findViewById(R.id.btnCancel);
         Button btnAccept = dialogView.findViewById(R.id.btnAccept);
         Button btnRemove = dialogView.findViewById(R.id.btnRemove);
-        Log.d(TAG, "Im not crazy I knew I would get here");
+        // Log.d(TAG, "Im not crazy I knew I would get here"); // yeah youre crazy
 
         editWeight.setText(Float.toString(drawConnection.getConnectionWeight(connection.getID())));
 

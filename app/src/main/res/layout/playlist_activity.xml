@@ -22,7 +22,7 @@
 
     <ListView
         android:id="@+id/songList"
-        android:padding="0dp"
+        android:paddingTop="40dp"
         android:layout_alignBaseline="@+id/playlistName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

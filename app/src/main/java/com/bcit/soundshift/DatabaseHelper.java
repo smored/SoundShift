@@ -25,16 +25,14 @@ import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String TAG = "DatabaseHelper";
-    private static final String DATABASE_NAME = "soundshift.db";
-    private static final int DATABASE_VERSION = 1;
+
     private final File DATABASE_FILE;
     private final Context context;
 
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        DATABASE_FILE = context.getDatabasePath(DATABASE_NAME);
+        super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+        DATABASE_FILE = context.getDatabasePath(Constants.DATABASE_NAME);
         this.context = context;
     }
 
@@ -72,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SHIFT_NAME_COL = "shift";
 
     public void createDataBase() throws IOException {
-        context.deleteDatabase(DATABASE_NAME); //Delete this once we are done editing the database from the computer
+        context.deleteDatabase(Constants.DATABASE_NAME); //Delete this once we are done editing the database from the computer
         // If the database does not exist, copy it from the assets.
         boolean mDataBaseExist = checkDataBase();
         if (!mDataBaseExist) {
@@ -81,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             try {
                 // Copy the database from assets
                 copyDataBase();
-                Log.e(TAG, "createDatabase database created");
+                Log.e(Constants.DATABASE_TAG, "createDatabase database created");
             } catch (IOException mIOException) {
                 throw new Error("ErrorCopyingDataBase");
             }
@@ -95,11 +93,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             // Get the Downloads directory
             File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             // Create the output file
-            File outputFile = new File(downloadsDir, DATABASE_NAME);
+            File outputFile = new File(downloadsDir, Constants.DATABASE_NAME);
             // Create parent directories if they don't exist
             outputFile.getParentFile().mkdirs();
             // Open the database file from the app's internal storage
-            InputStream inputStream = new FileInputStream(context.getDatabasePath(DATABASE_NAME));
+            InputStream inputStream = new FileInputStream(context.getDatabasePath(Constants.DATABASE_NAME));
             // Open the output stream
             OutputStream outputStream = new FileOutputStream(outputFile);
             // Copy the database file
@@ -372,7 +370,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return DATABASE_FILE.exists();
     }
     private void copyDataBase() throws IOException {
-        InputStream mInput = context.getAssets().open(DATABASE_NAME);
+        InputStream mInput = context.getAssets().open(Constants.DATABASE_NAME);
         OutputStream mOutput = new FileOutputStream(DATABASE_FILE);
         byte[] mBuffer = new byte[1024];
         int mLength;
@@ -455,7 +453,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor executeQuery(String query) {
         SQLiteDatabase db = getReadableDatabase();
-        Log.i(TAG, query);
+        Log.i(Constants.DATABASE_TAG, query);
         Cursor cursor = db.rawQuery(query, null);
         // Do not close db here, let the caller handle it
         return cursor;
@@ -468,7 +466,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for (int i = 0; i < values.size(); i++) {
             log = log + " " + values.get(i);
         }
-        Log.i(TAG, log);
+        Log.i(Constants.DATABASE_TAG, log);
         Cursor cursor = db.rawQuery(query, selectionArgs);
         // Do not close db here, let the caller handle it
         return cursor;

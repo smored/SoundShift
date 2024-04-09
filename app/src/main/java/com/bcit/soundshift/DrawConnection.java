@@ -1,10 +1,12 @@
 package com.bcit.soundshift;
 
+import static com.bcit.soundshift.Constants.TOUCH_THRESHOLD;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -14,9 +16,10 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 
 public class DrawConnection extends View {
-    private Paint paint;
-    private ArrayList<Connection> connectionList;
 
+    private Paint paint;
+    Path path = new Path();
+    private ArrayList<Connection> connectionList;
     private OnConnectionClickListener connectionClickListener;
 
     public void removeConnection(int id) {
@@ -54,9 +57,10 @@ public class DrawConnection extends View {
 
     private void init() {
         paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
         paint.setColor(ContextCompat.getColor(getContext(), R.color.purple));
-        paint.setStrokeWidth(5);
-        paint.setTextSize(50);
+        paint.setStrokeWidth(Constants.STROKEWIDTH);
+        paint.setTextSize(Constants.TEXTSIZE);
         connectionList = new ArrayList<>();
     }
 
@@ -65,13 +69,46 @@ public class DrawConnection extends View {
         super.onDraw(canvas);
 
         for (Connection connection : connectionList) {
-            float startX = connection.getStartX();
-            float startY = connection.getStartY();
-            float endX = connection.getEndX();
-            float endY = connection.getEndY();
+            int startX = connection.getStartX();
+            int startY = connection.getStartY() + Constants.BUTTON_HEIGHT_FIX;
+            int endX = connection.getEndX();
+            int endY = connection.getEndY() + Constants.BUTTON_HEIGHT_FIX;
+
+            final int diffY = startY-endY;
+            final int diffX = startX-endX;
+
+            int hX = connection.getStartButton().getWidth();
+            int hY = connection.getStartButton().getHeight();
+
+            if (diffY > Constants.SIDE_BUTTON_THRESHOLD) { // start is lower than end
+                startY -= hY;
+                endY = endY;
+            } else if (diffY < -Constants.SIDE_BUTTON_THRESHOLD) { // end is lower than start
+                startY = startY;
+                endY -= hY;
+            } else { // do the side thing
+                startY -= hY/2;
+                endY -= hY/2;
+                if (diffX > 0) {
+                    startX -= hX/2;
+                    endX += hX/2;
+                } else if (diffX < 0) {
+                    startX += hX/2;
+                    endX -= hX/2;
+                }
+            }
 
             // Draw the line
-            canvas.drawLine(startX, startY, endX, endY, paint);
+//            canvas.drawLine(startX, startY, endX, endY, paint);
+
+            // Path line
+            path.reset();
+            path.moveTo(startX, startY);
+            path.cubicTo((startX+endX)/2, startY, (startX+endX)/2, endY, endX, endY);
+            canvas.drawPath(path, paint);
+
+            canvas.drawCircle(startX, startY, Constants.CIRCLESIZE, paint);
+            canvas.drawCircle(endX, endY, Constants.CIRCLESIZE, paint);
 
             // Calculate the midpoint of the line
             float midX = (startX + endX) / 2;
@@ -81,7 +118,13 @@ public class DrawConnection extends View {
             String weightingText = String.valueOf(connection.getWeighting());
 
             // Draw the text
+            paint.setStrokeWidth((float) Constants.STROKEWIDTH /2);
+            paint.setColor(ContextCompat.getColor(getContext(), R.color.white));
             canvas.drawText(weightingText, midX, midY, paint);
+
+            // reset
+            paint.setStrokeWidth(Constants.STROKEWIDTH);
+            paint.setColor(ContextCompat.getColor(getContext(), R.color.purple));
         }
     }
 
@@ -160,7 +203,7 @@ public class DrawConnection extends View {
                         + Math.pow(connection.getEndX() - connection.getStartX(), 2)
         );
         // Adjust the threshold as needed
-        return distance < 50; // Check if the touch point is within 50 pixels of the line
+        return distance < Constants.TOUCH_THRESHOLD; // Check if the touch point is within x pixels of the line
     }
 
     public float getConnectionWeight(int id)
